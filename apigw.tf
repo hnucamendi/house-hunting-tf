@@ -59,7 +59,7 @@ resource "aws_apigatewayv2_route" "get_projects" {
 resource "aws_apigatewayv2_stage" "main_stage"{
  api_id      = aws_apigatewayv2_api.main.id
  name        = "${local.app_name}-stage"
- deployment_id = aws_apigatewayv2_deployment.main_deployment.id
+ auto_deploy = true
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.apigw_main.arn
@@ -113,8 +113,8 @@ resource "aws_apigatewayv2_stage" "main_stage"{
    logging_level            = "INFO"
    data_trace_enabled       = true
    detailed_metrics_enabled = true
-   throttling_burst_limit = 5000
-   throttling_rate_limit  = 10000
+   throttling_burst_limit   = 5000
+   throttling_rate_limit    = 10000
  }
 }
 
@@ -134,31 +134,6 @@ resource "aws_apigatewayv2_api_mapping" "main_api_mapping" {
  stage       = aws_apigatewayv2_stage.main_stage.id
 }
 
-resource "aws_apigatewayv2_deployment" "main_deployment" {
- api_id      = aws_apigatewayv2_api.main.id
- description = "Main Deployment"
-
- triggers = {
-   redployment = sha1(join(",", tolist([
-     jsonencode(aws_apigatewayv2_integration.criteria),
-     jsonencode(aws_apigatewayv2_integration.ratings),
-   ])))
- }
-
- lifecycle {
-   create_before_destroy = true
- }
-
- depends_on = [
-   aws_apigatewayv2_route.post_criteria,
-   aws_apigatewayv2_route.post_ratings,
-   aws_apigatewayv2_route.get_criteria,
-   aws_apigatewayv2_route.get_ratings,
-   aws_apigatewayv2_route.get_projects,
-   aws_apigatewayv2_route.post_projects,
- ]
-}
-
 resource "aws_apigatewayv2_authorizer" "main_authorizer" {
  api_id                            = aws_apigatewayv2_api.main.id
  authorizer_type                   = "REQUEST"
@@ -174,6 +149,7 @@ resource "aws_apigatewayv2_authorizer" "main_authorizer" {
 resource "aws_apigatewayv2_integration" "criteria" {
  api_id                    = aws_apigatewayv2_api.main.id
  integration_type          = "AWS_PROXY"
+ payload_format_version    =  "2.0"
  connection_type           = "INTERNET"
  description               = "House Hunting Criteria Logic"
  integration_method        = "POST"
@@ -185,6 +161,7 @@ resource "aws_apigatewayv2_integration" "criteria" {
 resource "aws_apigatewayv2_integration" "ratings" {
  api_id                    = aws_apigatewayv2_api.main.id
  integration_type          = "AWS_PROXY"
+ payload_format_version    =  "2.0"
  connection_type           = "INTERNET"
  description               = "House Hunting Ratings Logic"
  integration_method        = "POST"
@@ -196,6 +173,7 @@ resource "aws_apigatewayv2_integration" "ratings" {
 resource "aws_apigatewayv2_integration" "projects" {
  api_id                    = aws_apigatewayv2_api.main.id
  integration_type          = "AWS_PROXY"
+ payload_format_version    =  "2.0"
  connection_type           = "INTERNET"
  description               = "House Hunting Projects Logic"
  integration_method        = "POST"
