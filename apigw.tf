@@ -59,7 +59,7 @@ resource "aws_apigatewayv2_route" "get_projects" {
 resource "aws_apigatewayv2_stage" "main_stage"{
  api_id      = aws_apigatewayv2_api.main.id
  name        = "${local.app_name}-stage"
- auto_deploy = true
+ deployment_id = aws_apigatewayv2_deployment.main_deployment.id
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.apigw_main.arn
@@ -113,6 +113,8 @@ resource "aws_apigatewayv2_stage" "main_stage"{
    logging_level            = "INFO"
    data_trace_enabled       = true
    detailed_metrics_enabled = true
+   throttling_burst_limit = 5000
+   throttling_rate_limit  = 10000
  }
 }
 
