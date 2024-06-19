@@ -60,6 +60,27 @@ resource "aws_apigatewayv2_stage" "main_stage"{
  api_id = aws_apigatewayv2_api.main.id
  name   = "${local.app_name}-stage"
 
+  access_log_settings {
+    destination_arn = aws_cloudwatch_log_group.apigw_main.arn
+    format = jsonencode({
+      requestId                 = "$context.requestId",
+      ip                        = "$context.identity.sourceIp",
+      caller                    = "$context.identity.caller",
+      user                      = "$context.identity.user",
+      requestTime               = "$context.requestTime",
+      requestTimeEpoch          = "$context.requestTimeEpoch",
+      httpMethod                = "$context.httpMethod",
+      resourcePath              = "$context.resourcePath",
+      status                    = "$context.status",
+      protocol                  = "$context.protocol",
+      responseLength            = "$context.responseLength",
+      integrationErrorMessage   = "$context.integrationErrorMessage",
+      integrationLatency        = "$context.integrationLatency",
+      integrationStatus         = "$context.integration.status",
+      errorMessage              = "$context.error.message"
+    })
+  }
+
  default_route_settings {
    logging_level            = "INFO"
    data_trace_enabled       = true
