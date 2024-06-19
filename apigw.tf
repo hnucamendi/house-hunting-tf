@@ -2,11 +2,11 @@ resource "aws_apigatewayv2_api" "main" {
  name          = local.app_name
  protocol_type = "HTTP"
 
- cors_configuration {
-   allow_origins = ["http://localhost:5173/", "https://house-hunting.hnucamendi.me/"]
-   allow_headers = ["Authorization"]
-   allow_methods = ["GET", "POST", "PUT"]
- }
+  cors_configuration {
+    allow_origins = ["http://localhost:5173", "https://house-hunting.hnucamendi.me", "https://hnucamendi.me"]
+    allow_headers = ["Authorization", "Content-Type", "X-Requested-With"]
+    allow_methods = ["GET", "POST", "PUT", "OPTIONS"]
+  }
 }
 
 resource "aws_apigatewayv2_route" "post_criteria" {
@@ -57,8 +57,9 @@ resource "aws_apigatewayv2_route" "get_projects" {
 }
 
 resource "aws_apigatewayv2_stage" "main_stage"{
- api_id = aws_apigatewayv2_api.main.id
- name   = "${local.app_name}-stage"
+ api_id      = aws_apigatewayv2_api.main.id
+ name        = "${local.app_name}-stage"
+ auto_deploy = true
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.apigw_main.arn
@@ -160,7 +161,8 @@ resource "aws_apigatewayv2_authorizer" "main_authorizer" {
  api_id                            = aws_apigatewayv2_api.main.id
  authorizer_type                   = "REQUEST"
  authorizer_uri                    = aws_lambda_function.authorizer.invoke_arn
- identity_sources                  = ["$request.header.Authorization"]
+ authorizer_result_ttl_in_seconds  = 300
+ identity_sources                  = ["$context.identity.sourceIp"]
  name                              = "api-authorizer"
  authorizer_payload_format_version = "2.0"
  enable_simple_responses           = true
