@@ -22,7 +22,7 @@ resource "aws_lambda_function" "projects" {
   role          = aws_iam_role.main_role.arn
   architectures = ["arm64"]
   filename      = "./bootstrap.zip"
-  handler       = "main.HandleRequest"
+  handler       = "bootstrap"
   runtime       = "provided.al2"
 }
 
@@ -31,7 +31,7 @@ resource "aws_lambda_function" "authorizer" {
   role          = aws_iam_role.main_role.arn
   architectures = ["arm64"]
   filename      = "./bootstrap.zip"
-  handler       = "main.HandleRequest"
+  handler       = "bootstrap"
   runtime       = "provided.al2"
 
   tracing_config {
