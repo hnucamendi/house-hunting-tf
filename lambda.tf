@@ -4,7 +4,7 @@ resource "aws_lambda_function" "criteria" {
   role          = aws_iam_role.main_role.arn
   architectures = ["arm64"]
   filename      = "./bootstrap.zip"
-  handler       = "main.HandleRequest"
+  handler       = "bootstrap"
   runtime       = "provided.al2"
 }
 
@@ -13,7 +13,7 @@ resource "aws_lambda_function" "ratings" {
   role          = aws_iam_role.main_role.arn
   architectures = ["arm64"]
   filename      = "./bootstrap.zip"
-  handler       = "main.HandleRequest"
+  handler       = "bootstrap"
   runtime       = "provided.al2"
 }
 
