@@ -4,8 +4,9 @@ resource "aws_apigatewayv2_api" "main" {
 
   cors_configuration {
     allow_origins = ["http://localhost:5173", "https://house-hunting.hnucamendi.me", "https://hnucamendi.me"]
-    allow_headers = ["Authorization", "Content-Type", "X-Requested-With"]
+    allow_headers = ["authorization", "x-authorization-method", "access-control-allow-origin", "content-type"]
     allow_methods = ["GET", "POST", "PUT", "OPTIONS"]
+    max_age       = 300
   }
 }
 
@@ -63,50 +64,57 @@ resource "aws_apigatewayv2_stage" "main_stage"{
 
   access_log_settings {
     destination_arn = aws_cloudwatch_log_group.apigw_main.arn
-    format = jsonencode({
-      requestId                      = "$context.requestId",
-      extendedRequestId              = "$context.extendedRequestId",
-      ip                             = "$context.identity.sourceIp",
-      caller                         = "$context.identity.caller",
-      user                           = "$context.identity.user",
-      userAgent                      = "$context.identity.userAgent",
-      requestTime                    = "$context.requestTime",
-      requestTimeEpoch               = "$context.requestTimeEpoch",
-      httpMethod                     = "$context.httpMethod",
-      resourcePath                   = "$context.resourcePath",
-      status                         = "$context.status",
-      protocol                       = "$context.protocol",
-      responseLength                 = "$context.responseLength",
-      integrationErrorMessage        = "$context.integrationErrorMessage",
-      integrationLatency             = "$context.integrationLatency",
-      integrationStatus              = "$context.integration.status",
-      errorMessage                   = "$context.error.message",
-      authorizerError                = "$context.authorizer.error.message",
-      authorizerLatency              = "$context.authorizer.latency",
-      accountId                      = "$context.identity.accountId",
-      apiId                          = "$context.apiId",
-      domainName                     = "$context.domainName",
-      domainPrefix                    = "$context.domainPrefix",
-      path                           = "$context.path",
-      stage                          = "$context.stage",
-      requestContextId               = "$context.requestId",
-      requestContextAccountId        = "$context.identity.accountId",
-      requestContextApiId            = "$context.apiId",
-      requestContextDomainName       = "$context.domainName",
-      requestContextDomainPrefix      = "$context.domainPrefix",
-      requestContextPath             = "$context.path",
-      requestContextStage            = "$context.stage",
-      requestContextRequestId        = "$context.requestId",
-      requestContextRequestTime      = "$context.requestTime",
-      requestContextRequestTimeEpoch = "$context.requestTimeEpoch",
-      requestContextResourcePath     = "$context.resourcePath",
-      requestContextHttpMethod       = "$context.httpMethod",
-      requestContextProtocol         = "$context.protocol",
-      requestContextStatus           = "$context.status",
-      requestContextIntegrationStatus = "$context.integration.status",
-      requestContextIntegrationLatency = "$context.integration.latency",
-      requestContextIntegrationErrorMessage = "$context.integrationErrorMessage"
-    })
+    format          = jsonencode({
+                        accountId: "$context.accountId",
+                        apiId: "$context.apiId",
+                        authorizerError: "$context.authorizer.error",
+                        authorizerPrincipalId: "$context.authorizer.principalId",
+                        awsEndpointRequestId: "$context.awsEndpointRequestId",
+                        awsEndpointRequestId2: "$context.awsEndpointRequestId2",
+                        customDomainBasePathMatched: "$context.customDomain.basePathMatched",
+                        dataProcessed: "$context.dataProcessed",
+                        domainName: "$context.domainName",
+                        domainPrefix: "$context.domainPrefix",
+                        errorMessage: "$context.error.message",
+                        errorResponseType: "$context.error.responseType",
+                        extendedRequestId: "$context.extendedRequestId",
+                        httpMethod: "$context.httpMethod",
+                        identityAccountId: "$context.identity.accountId",
+                        identityCaller: "$context.identity.caller",
+                        identityCognitoAuthenticationProvider: "$context.identity.cognitoAuthenticationProvider",
+                        identityCognitoAuthenticationType: "$context.identity.cognitoAuthenticationType",
+                        identityCognitoIdentityId: "$context.identity.cognitoIdentityId",
+                        identityCognitoIdentityPoolId: "$context.identity.cognitoIdentityPoolId",
+                        identityPrincipalOrgId: "$context.identity.principalOrgId",
+                        identityClientCertPem: "$context.identity.clientCert.clientCertPem",
+                        identityClientCertSubjectDN: "$context.identity.clientCert.subjectDN",
+                        identityClientCertIssuerDN: "$context.identity.clientCert.issuerDN",
+                        identityClientCertSerialNumber: "$context.identity.clientCert.serialNumber",
+                        identityClientCertValidityNotBefore: "$context.identity.clientCert.validity.notBefore",
+                        identityClientCertValidityNotAfter: "$context.identity.clientCert.validity.notAfter",
+                        identitySourceIp: "$context.identity.sourceIp",
+                        identityUser: "$context.identity.user",
+                        identityUserAgent: "$context.identity.userAgent",
+                        identityUserArn: "$context.identity.userArn",
+                        integrationError: "$context.integration.error",
+                        integrationIntegrationStatus: "$context.integration.integrationStatus",
+                        integrationRequestId: "$context.integration.requestId",
+                        lambdaProxyCodeIntegrationStatus: "$context.integration.status",
+                        integrationErrorMessage: "$context.integrationErrorMessage",
+                        integrationLatency: "$context.integration.latency",
+                        integrationLatencyV2: "$context.integrationLatency",
+                        integrationStatus: "$context.integrationStatus",
+                        path: "$context.path",
+                        protocol: "$context.protocol",
+                        requestId: "$context.requestId",
+                        requestTime: "$context.requestTime",
+                        requestTimeEpoch: "$context.requestTimeEpoch",
+                        responseLatency: "$context.responseLatency",
+                        responseLength: "$context.responseLength",
+                        routeKey: "$context.routeKey",
+                        stage: "$context.stage",
+                        methodStatus: "$context.status"
+                      })
   }
 
  default_route_settings {
