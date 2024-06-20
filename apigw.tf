@@ -146,8 +146,8 @@ resource "aws_apigatewayv2_authorizer" "main_authorizer" {
  api_id                            = aws_apigatewayv2_api.main.id
  authorizer_type                   = "REQUEST"
  authorizer_uri                    = aws_lambda_function.authorizer.invoke_arn
- authorizer_result_ttl_in_seconds  = 300
- identity_sources                  = ["$context.identity.sourceIp"]
+ authorizer_result_ttl_in_seconds  = 0
+ identity_sources                  = [""]
  name                              = "api-authorizer"
  authorizer_payload_format_version = "2.0"
  enable_simple_responses           = true
@@ -181,7 +181,7 @@ resource "aws_apigatewayv2_integration" "ratings" {
 resource "aws_apigatewayv2_integration" "projects" {
  api_id                    = aws_apigatewayv2_api.main.id
  integration_type          = "AWS_PROXY"
- payload_format_version    =  "2.0"
+ payload_format_version    = "2.0"
  connection_type           = "INTERNET"
  description               = "House Hunting Projects Logic"
  integration_method        = "POST"
