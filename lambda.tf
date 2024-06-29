@@ -2,8 +2,8 @@
 resource "aws_lambda_function" "criteria" {
   function_name = "${local.app_name}-criteria"
   role          = aws_iam_role.main_role.arn
-  architectures = ["arm64"]
-  filename      = "./bootstrap.zip"
+  architectures = ["x86_64"]
+  filename       = "./bootstrap.zip"
   handler       = "bootstrap"
   runtime       = "provided.al2"
 }
@@ -11,7 +11,7 @@ resource "aws_lambda_function" "criteria" {
 resource "aws_lambda_function" "ratings" {
   function_name = "${local.app_name}-ratings"
   role          = aws_iam_role.main_role.arn
-  architectures = ["arm64"]
+  architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
   handler       = "bootstrap"
   runtime       = "provided.al2"
@@ -20,7 +20,7 @@ resource "aws_lambda_function" "ratings" {
 resource "aws_lambda_function" "projects" {
   function_name = "${local.app_name}-projects"
   role          = aws_iam_role.main_role.arn
-  architectures = ["arm64"]
+  architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
   handler       = "bootstrap"
   runtime       = "provided.al2"
@@ -29,7 +29,7 @@ resource "aws_lambda_function" "projects" {
 resource "aws_lambda_function" "authorizer" {
   function_name = "${local.app_name}-authorizer"
   role          = aws_iam_role.main_role.arn
-  architectures = ["arm64"]
+  architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
   handler       = "bootstrap"
   runtime       = "provided.al2"
