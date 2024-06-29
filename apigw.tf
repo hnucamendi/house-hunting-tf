@@ -28,7 +28,7 @@ resource "aws_apigatewayv2_route" "post_ratings" {
 resource "aws_apigatewayv2_route" "post_projects" {
  api_id          = aws_apigatewayv2_api.main.id
  route_key       = "POST /projects"
- target          = "integrations/${aws_apigatewayv2_integration.ratings.id}"
+ target          = "integrations/${aws_apigatewayv2_integration.projects.id}"
  authorizer_id   = aws_apigatewayv2_authorizer.main_authorizer.id
  authorization_type = "CUSTOM"
 }
@@ -52,7 +52,7 @@ resource "aws_apigatewayv2_route" "get_ratings" {
 resource "aws_apigatewayv2_route" "get_projects" {
  api_id          = aws_apigatewayv2_api.main.id
  route_key       = "GET /projects"
- target          = "integrations/${aws_apigatewayv2_integration.ratings.id}"
+ target          = "integrations/${aws_apigatewayv2_integration.projects.id}"
  authorizer_id   = aws_apigatewayv2_authorizer.main_authorizer.id
  authorization_type = "CUSTOM"
 }
