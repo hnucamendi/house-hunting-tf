@@ -3,7 +3,7 @@ resource "aws_apigatewayv2_api" "main" {
  protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["http://localhost:5173", "https://house-hunting.hnucamendi.me", "https://hnucamendi.me"]
+    allow_origins = ["http://localhost:5173", "https://hnucamendi.net", "https://hnucamendi.net"]
     allow_headers = ["authorization", "x-authorization-method", "access-control-allow-origin", "content-type"]
     allow_methods = ["GET", "POST", "PUT", "OPTIONS"]
     max_age       = 300
@@ -134,12 +134,19 @@ resource "aws_apigatewayv2_domain_name" "main_domain" {
    endpoint_type   = "REGIONAL"
    security_policy = "TLS_1_2"
  }
+
+  depends_on = [aws_acm_certificate.api_cert]
 }
 
 resource "aws_apigatewayv2_api_mapping" "main_api_mapping" {
  api_id      = aws_apigatewayv2_api.main.id
  domain_name = aws_apigatewayv2_domain_name.main_domain.id
  stage       = aws_apigatewayv2_stage.main_stage.id
+
+ depends_on = [
+  aws_apigatewayv2_domain_name.main_domain, 
+  aws_apigatewayv2_stage.main_stage
+  ]
 }
 
 resource "aws_apigatewayv2_authorizer" "main_authorizer" {
