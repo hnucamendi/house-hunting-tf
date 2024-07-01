@@ -1,15 +1,6 @@
 # Lambda Functions
-resource "aws_lambda_function" "criteria" {
-  function_name = "${local.app_name}-criteria"
-  role          = aws_iam_role.main_role.arn
-  architectures = ["x86_64"]
-  filename       = "./bootstrap.zip"
-  handler       = "bootstrap"
-  runtime       = "provided.al2"
-}
-
-resource "aws_lambda_function" "ratings" {
-  function_name = "${local.app_name}-ratings"
+resource "aws_lambda_function" "get_projects" {
+  function_name = "${local.app_name}-get-projects"
   role          = aws_iam_role.main_role.arn
   architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
@@ -17,8 +8,8 @@ resource "aws_lambda_function" "ratings" {
   runtime       = "provided.al2"
 }
 
-resource "aws_lambda_function" "projects" {
-  function_name = "${local.app_name}-projects"
+resource "aws_lambda_function" "post_projects" {
+  function_name = "${local.app_name}-post-projects"
   role          = aws_iam_role.main_role.arn
   architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
@@ -47,9 +38,8 @@ data "aws_iam_policy_document" "lambda_invoke_policy" {
       "lambda:InvokeFunction"
     ]
     resources = [
-      aws_lambda_function.criteria.arn,
-      aws_lambda_function.ratings.arn,
-      aws_lambda_function.projects.arn,
+      aws_lambda_function.post_projects.arn,
+      aws_lambda_function.get_projects.arn,
       aws_lambda_function.authorizer.arn
     ]
   }
@@ -106,9 +96,8 @@ resource "aws_iam_role_policy" "main_role_policy" {
           "lambda:InvokeFunction"
         ],
         Resource = [
-          aws_lambda_function.criteria.arn,
-          aws_lambda_function.ratings.arn,
-          aws_lambda_function.projects.arn,
+          aws_lambda_function.get_projects.arn,
+          aws_lambda_function.post_projects.arn,
           aws_lambda_function.authorizer.arn
         ]
       }
@@ -117,26 +106,18 @@ resource "aws_iam_role_policy" "main_role_policy" {
 }
 
 # Lambda Permissions for API Gateway
-resource "aws_lambda_permission" "api_gateway_criteria" {
-  statement_id  = "AllowAPIGatewayInvokeCriteria"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.criteria.arn
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
-}
-
-resource "aws_lambda_permission" "api_gateway_ratings" {
-  statement_id  = "AllowAPIGatewayInvokeRatings"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.ratings.arn
-  principal     = "apigateway.amazonaws.com"
-  source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
-}
-
-resource "aws_lambda_permission" "api_gateway_projects" {
+resource "aws_lambda_permission" "api_gateway_get_projects" {
   statement_id  = "AllowAPIGatewayInvokeProjects"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.projects.arn
+  function_name = aws_lambda_function.get_projects.arn
+  principal     = "apigateway.amazonaws.com"
+  source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
+}
+
+resource "aws_lambda_permission" "api_gateway_post_projects" {
+  statement_id  = "AllowAPIGatewayInvokeProjects"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.post_projects.arn
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
 }
