@@ -86,7 +86,7 @@ resource "aws_iam_role_policy" "main_role_policy" {
         Action = [
           "logs:CreateLogGroup",
           "logs:CreateLogStream",
-          "logs:PutLogEvents"
+          "logs:PutLogEvents",
         ],
         Resource = "arn:aws:logs:*:*:*"
       },
@@ -99,6 +99,16 @@ resource "aws_iam_role_policy" "main_role_policy" {
           aws_lambda_function.get_projects.arn,
           aws_lambda_function.post_projects.arn,
           aws_lambda_function.authorizer.arn
+        ]
+      },
+      {
+        Effect = "Allow",
+        Action = [
+          "dynamodb:PutItem",
+          "dynamodb:GetItem",
+        ],
+        Resource = [
+          aws_dynamodb_table.projects.arn
         ]
       }
     ]
