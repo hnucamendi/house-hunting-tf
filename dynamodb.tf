@@ -1,8 +1,14 @@
-resource "aws_dynamodb_table" "projects" {
-  name           = "ProjectsTable"
+resource "aws_dynamodb_table" "users" {
+  name           = "UsersTable"
   billing_mode   = "PAY_PER_REQUEST"
 
-  hash_key       = "project_id"
+  hash_key        = "id"
+  range_key       = "project_id"
+
+  attribute {
+    name = "id"
+    type = "S"
+  }
 
   attribute {
     name = "project_id"
@@ -10,7 +16,7 @@ resource "aws_dynamodb_table" "projects" {
   }
 
   tags = {
-    Name = "ProjectsTable"
+    Name = "UsersTable"
   }
 }
 
