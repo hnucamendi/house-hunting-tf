@@ -3,7 +3,7 @@ resource "aws_dynamodb_table" "users" {
   billing_mode   = "PAY_PER_REQUEST"
 
   hash_key        = "id"
-  range_key       = "project_id"
+  range_key       = "projectId"
 
   attribute {
     name = "id"
@@ -11,7 +11,7 @@ resource "aws_dynamodb_table" "users" {
   }
 
   attribute {
-    name = "project_id"
+    name = "projectId"
     type = "S"
   }
 
