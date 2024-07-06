@@ -18,7 +18,7 @@ resource "aws_lambda_function" "get_project" {
 }
 
 resource "aws_lambda_function" "post_project" {
-  function_name = "${local.app_name}-post-projects"
+  function_name = "${local.app_name}-post-project"
   role          = aws_iam_role.main_role.arn
   architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
