@@ -108,7 +108,8 @@ resource "aws_iam_role_policy" "main_role_policy" {
           "dynamodb:GetItem",
         ],
         Resource = [
-          aws_dynamodb_table.users.arn
+          aws_dynamodb_table.users.arn,
+          aws_dynamodb_table.projects.arn
         ]
       }
     ]
