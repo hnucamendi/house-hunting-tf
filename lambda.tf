@@ -129,6 +129,7 @@ resource "aws_iam_role_policy" "main_role_policy" {
           "dynamodb:PutItem",
           "dynamodb:GetItem",
           "dynamodb:Query",
+          "dynamodb:UpdateItem",
         ],
         Resource = [
           aws_dynamodb_table.users.arn,
