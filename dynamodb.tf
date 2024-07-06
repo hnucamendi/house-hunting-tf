@@ -3,29 +3,19 @@ resource "aws_dynamodb_table" "users" {
   billing_mode   = "PAY_PER_REQUEST"
 
   hash_key        = "id"
+  range_key       = "projectId"
 
   attribute {
     name = "id"
+    type = "S"
+  }
+
+  attribute {
+    name = "projectId"
     type = "S"
   }
 
   tags = {
     Name = "UsersTable"
-  }
-}
-
-resource "aws_dynamodb_table" "projects" {
-  name           = "ProjectsTable"
-  billing_mode   = "PAY_PER_REQUEST"
-
-  hash_key        = "id"
-
-  attribute {
-    name = "id"
-    type = "S"
-  }
-
-  tags = {
-    Name = "ProjectsTable"
   }
 }
