@@ -26,7 +26,7 @@ resource "aws_lambda_function" "post_project" {
   runtime       = "provided.al2"
 }
 
-resource "aws_lambda_function" "put_projects" {
+resource "aws_lambda_function" "put_project" {
   function_name = "${local.app_name}-put-projects"
   role          = aws_iam_role.main_role.arn
   architectures = ["x86_64"]
@@ -57,7 +57,7 @@ data "aws_iam_policy_document" "lambda_invoke_policy" {
     ]
     resources = [
       aws_lambda_function.post_project.arn,
-      aws_lambda_function.put_projects.arn,
+      aws_lambda_function.put_project.arn,
       aws_lambda_function.get_projects.arn,
       aws_lambda_function.get_project.arn,
       aws_lambda_function.authorizer.arn
@@ -119,7 +119,7 @@ resource "aws_iam_role_policy" "main_role_policy" {
           aws_lambda_function.get_projects.arn,
           aws_lambda_function.get_project.arn,
           aws_lambda_function.post_project.arn,
-          aws_lambda_function.put_projects.arn,
+          aws_lambda_function.put_project.arn,
           aws_lambda_function.authorizer.arn
         ]
       },
@@ -163,10 +163,10 @@ resource "aws_lambda_permission" "api_gateway_post_project" {
   source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
 }
 
-resource "aws_lambda_permission" "api_gateway_put_projects" {
+resource "aws_lambda_permission" "api_gateway_put_project" {
   statement_id  = "AllowAPIGatewayInvokeProjects"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.put_projects.arn
+  function_name = aws_lambda_function.put_project.arn
   principal     = "apigateway.amazonaws.com"
   source_arn    = "${aws_apigatewayv2_api.main.execution_arn}/*/*"
 }
