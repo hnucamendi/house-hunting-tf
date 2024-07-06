@@ -10,10 +10,10 @@ resource "aws_apigatewayv2_api" "main" {
   }
 }
 
-resource "aws_apigatewayv2_route" "post_projects" {
+resource "aws_apigatewayv2_route" "post_project" {
  api_id          = aws_apigatewayv2_api.main.id
  route_key       = "POST /projects"
- target          = "integrations/${aws_apigatewayv2_integration.post_projects.id}"
+ target          = "integrations/${aws_apigatewayv2_integration.post_project.id}"
  authorizer_id   = aws_apigatewayv2_authorizer.main_authorizer.id
  authorization_type = "CUSTOM"
 }
@@ -170,16 +170,16 @@ resource "aws_apigatewayv2_integration" "get_project" {
  depends_on                = [aws_lambda_function.get_project]
 }
 
-resource "aws_apigatewayv2_integration" "post_projects" {
+resource "aws_apigatewayv2_integration" "post_project" {
  api_id                    = aws_apigatewayv2_api.main.id
  integration_type          = "AWS_PROXY"
  payload_format_version    = "2.0"
  connection_type           = "INTERNET"
  description               = "House Hunting Projects Logic"
  integration_method        = "POST"
- integration_uri           = aws_lambda_function.post_projects.invoke_arn
+ integration_uri           = aws_lambda_function.post_project.invoke_arn
  passthrough_behavior      = "WHEN_NO_MATCH"
- depends_on                = [aws_lambda_function.post_projects]
+ depends_on                = [aws_lambda_function.post_project]
 }
 
 resource "aws_apigatewayv2_integration" "put_projects" {
