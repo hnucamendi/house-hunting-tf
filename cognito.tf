@@ -10,6 +10,14 @@ resource "aws_cognito_user_pool" "main" {
     source_arn            = aws_ses_domain_identity.identity.arn
   }
 
+  password_policy {
+    minimum_length    = 8
+    require_lowercase = true
+    require_uppercase = true
+    require_numbers   = false
+    require_symbols   = false
+  }
+
 schema {
   attribute_data_type      = "String" 
   developer_only_attribute = false
