@@ -36,7 +36,7 @@ resource "aws_acm_certificate" "api_cert" {
 }
 
 data "aws_route53_zone" "zone" {
-  name         = "${local.domain_uri}.net"
+  name         = "${local.domain_uri}.com"
   private_zone = false
 }
 

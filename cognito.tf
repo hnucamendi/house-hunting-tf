@@ -6,7 +6,7 @@ resource "aws_cognito_user_pool" "main" {
 
   email_configuration {
     email_sending_account = "DEVELOPER"
-    from_email_address    = "HouseHunting <no-reply@${local.domain_name}>"
+    from_email_address    = "HomeMendi <no-reply@${local.domain_name}>"
     source_arn            = aws_ses_domain_identity.identity.arn
   }
 
@@ -35,8 +35,8 @@ schema {
 resource "aws_cognito_user_pool_client" "client" {
   name                                 = "${local.app_name}-user-pool-client"
   user_pool_id                         = aws_cognito_user_pool.main.id
-  callback_urls                        = ["https://hnucamendi.net/projects/", "http://localhost:5173/projects/"]
-  logout_urls                          = ["https://hnucamendi.net/", "http://localhost:5173/"]
+  callback_urls                        = ["https://hnucamendi.com/projects/", "http://localhost:5173/projects/"]
+  logout_urls                          = ["https://hnucamendi.com/", "http://localhost:5173/"]
   explicit_auth_flows                   = ["ALLOW_USER_PASSWORD_AUTH", "ALLOW_REFRESH_TOKEN_AUTH"]
   allowed_oauth_flows                   = ["code", "implicit"]
   allowed_oauth_scopes                 = ["email", "openid"]
@@ -102,10 +102,10 @@ resource "aws_ses_domain_identity" "identity" {
 }
 
 resource "aws_ses_domain_dkim" "dkim" {
-  domain = aws_ses_domain_identity.identity.domain
+  domain = aws_ses_domain_identity.identity.domain 
 }
 
-resource "aws_ses_domain_identity_verification" "example_verification" {
+resource "aws_ses_domain_identity_verification" "domain_verification" {
   domain = aws_ses_domain_identity.identity.id
 
   depends_on = [aws_route53_record.ses_verification]

@@ -3,7 +3,7 @@ resource "aws_apigatewayv2_api" "main" {
  protocol_type = "HTTP"
 
   cors_configuration {
-    allow_origins = ["http://localhost:5173", "https://hnucamendi.net", "https://hnucamendi.net"]
+    allow_origins = ["http://localhost:5173", "https://hnucamendi.com", "https://hnucamendi.com"]
     allow_headers = ["authorization", "x-authorization-method", "access-control-allow-origin", "content-type"]
     allow_methods = ["GET", "POST", "PUT", "OPTIONS"]
     max_age       = 300
@@ -151,7 +151,7 @@ resource "aws_apigatewayv2_integration" "get_projects" {
  integration_type          = "AWS_PROXY"
  payload_format_version    = "2.0"
  connection_type           = "INTERNET"
- description               = "House Hunting Projects Logic"
+ description               = "HomeMendi Projects Logic"
  integration_method        = "POST"
  integration_uri           = aws_lambda_function.get_projects.invoke_arn
  passthrough_behavior      = "WHEN_NO_MATCH"
@@ -163,7 +163,7 @@ resource "aws_apigatewayv2_integration" "get_project" {
  integration_type          = "AWS_PROXY"
  payload_format_version    = "2.0"
  connection_type           = "INTERNET"
- description               = "House Hunting Projects Logic"
+ description               = "HomeMendi Projects Logic"
  integration_method        = "POST"
  integration_uri           = aws_lambda_function.get_project.invoke_arn
  passthrough_behavior      = "WHEN_NO_MATCH"
@@ -175,7 +175,7 @@ resource "aws_apigatewayv2_integration" "post_project" {
  integration_type          = "AWS_PROXY"
  payload_format_version    = "2.0"
  connection_type           = "INTERNET"
- description               = "House Hunting Projects Logic"
+ description               = "HomeMendi Projects Logic"
  integration_method        = "POST"
  integration_uri           = aws_lambda_function.post_project.invoke_arn
  passthrough_behavior      = "WHEN_NO_MATCH"
@@ -187,7 +187,7 @@ resource "aws_apigatewayv2_integration" "put_project" {
  integration_type          = "AWS_PROXY"
  payload_format_version    = "2.0"
  connection_type           = "INTERNET"
- description               = "House Hunting Projects Logic"
+ description               = "HomeMendi Projects Logic"
  integration_method        = "POST"
  integration_uri           = aws_lambda_function.put_project.invoke_arn
  passthrough_behavior      = "WHEN_NO_MATCH"
