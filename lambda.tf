@@ -2,7 +2,7 @@
 resource "aws_lambda_function" "get_projects" {
   function_name = "${local.app_name}-get-projects"
   role          = aws_iam_role.main_role.arn
-  architectures = ["arm64"]
+  architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
   handler       = "bootstrap"
   runtime       = "provided.al2"
@@ -11,7 +11,7 @@ resource "aws_lambda_function" "get_projects" {
 resource "aws_lambda_function" "get_project" {
   function_name = "${local.app_name}-get-project"
   role          = aws_iam_role.main_role.arn
-  architectures = ["arm64"]
+  architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
   handler       = "bootstrap"
   runtime       = "provided.al2"
@@ -20,7 +20,7 @@ resource "aws_lambda_function" "get_project" {
 resource "aws_lambda_function" "post_project" {
   function_name = "${local.app_name}-post-project"
   role          = aws_iam_role.main_role.arn
-  architectures = ["arm64"]
+  architectures = ["x86_64"]
   filename      = "./bootstrap.zip"
   handler       = "bootstrap"
   runtime       = "provided.al2"
